@@ -1,0 +1,57 @@
+{% extends 'products/base.html' %}
+
+{% block title %}{{ product.name }} - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-8">
+        <h1 class="display-5">{{ product.name }}</h1>
+        <p class="text-muted">Added on {{ product.created_at|date:"F d, Y" }}</p>
+        
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Price</h6>
+                        <h3 class="text-success">₦{{ product.price }}</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Stock Level</h6>
+                        <h3>{{ product.stock }} units</h3>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="text-muted">Category</h6>
+                    <p><strong>{{ product.category.name }}</strong></p>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="text-muted">Availability</h6>
+                    {% if product.stock > 0 %}
+                        <span class="badge bg-success" style="font-size: 1rem;">✓ In Stock - {{ product.stock }} available</span>
+                    {% else %}
+                        <span class="badge bg-danger" style="font-size: 1rem;">✗ Out of Stock</span>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-4">
+                    {% if product.stock > 0 %}
+                        <button class="btn btn-primary btn-lg">Add to Cart</button>
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Products</a></li>
+        <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+</nav>
+{% endblock %}
