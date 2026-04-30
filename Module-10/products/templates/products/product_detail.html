@@ -3,43 +3,51 @@
 {% block title %}{{ product.name }} - ToriloShop{% endblock %}
 
 {% block content %}
-<div class="row mb-5">
-    <div class="col-md-8">
-        <h1 class="display-5">{{ product.name }}</h1>
-        <p class="text-muted">Added on {{ product.created_at|date:"F d, Y" }}</p>
+<div class="container product-detail-container">
+    <h1 class="product-detail-title">{{ product.name }}</h1>
+    <p class="product-detail-date">Added on {{ product.created_at|date:"F d, Y" }}</p>
+    
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail-image">
+            {% else %}
+                <div class="product-detail-image">📷</div>
+            {% endif %}
+        </div>
         
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h6 class="text-muted">Price</h6>
-                        <h3 class="text-success">₦{{ product.price }}</h3>
+        <div class="col-md-6">
+            <div class="product-detail-info-card">
+                <div class="product-detail-row">
+                    <div class="product-detail-section">
+                        <h6>Price</h6>
+                        <h3 class="text-success-custom">₦{{ product.price }}</h3>
                     </div>
-                    <div class="col-md-6">
-                        <h6 class="text-muted">Stock Level</h6>
+                    <div class="product-detail-section">
+                        <h6>Stock Level</h6>
                         <h3>{{ product.stock }} units</h3>
                     </div>
                 </div>
                 
-                <div class="mb-4">
-                    <h6 class="text-muted">Category</h6>
+                <div class="product-detail-section">
+                    <h6>Category</h6>
                     <p><strong>{{ product.category.name }}</strong></p>
                 </div>
                 
-                <div class="mb-4">
-                    <h6 class="text-muted">Availability</h6>
-                    {% if product.stock > 0 %}
-                        <span class="badge bg-success" style="font-size: 1rem;">✓ In Stock - {{ product.stock }} available</span>
+                <div class="product-availability">
+                    <h6>Availability</h6>
+                    {% if product.is_available and product.stock > 0 %}
+                        <span class="badge bg-success badge-custom">✓ In Stock - {{ product.stock }} available</span>
                     {% else %}
-                        <span class="badge bg-danger" style="font-size: 1rem;">✗ Out of Stock</span>
+                        <span class="badge bg-danger badge-custom">✗ Out of Stock</span>
                     {% endif %}
                 </div>
                 
-                <div class="mt-4 d-grid gap-2 d-sm-flex gap-sm-2">
-                    {% if product.stock > 0 %}
-                        <button class="btn btn-primary btn-lg">Add to Cart</button>
+                <div class="product-actions-detail">
+                    {% if product.is_available and product.stock > 0 %}
+                        <button class="btn btn-primary btn-lg flex-grow-1">Add to Cart</button>
                     {% else %}
-                        <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+                        <button class="btn btn-secondary btn-lg flex-grow-1" disabled>Out of Stock</button>
                     {% endif %}
                     <a href="{% url 'shop:edit_product' product.id %}" class="btn btn-warning">✏️ Edit</a>
                     <a href="{% url 'shop:delete_product' product.id %}" class="btn btn-danger">🗑️ Delete</a>
@@ -50,7 +58,7 @@
 </div>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb container">
         <li class="breadcrumb-item"><a href="{% url 'shop:home' %}">Home</a></li>
         <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Products</a></li>
         <li class="breadcrumb-item active">{{ product.name }}</li>
