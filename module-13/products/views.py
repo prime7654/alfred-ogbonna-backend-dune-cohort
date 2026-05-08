@@ -3,8 +3,10 @@ from django.db.models import Count, Sum, Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from rest_framework import generics
 from .models import Product, Category
 from .forms import ProductForm, CategoryForm
+from .serializers import ProductSerializer, CategorySerializer
 
 def home(request):
     return render(request, "products/home.html")
@@ -162,3 +164,32 @@ def about(request):
 
 def custom_404(request, exception=None):
     return render(request, "products/404.html", status=404)
+
+
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.select_related("category").order_by("id")
+    serializer_class = ProductSerializer
+    http_method_names = ["get", "post", "head", "options"]
+
+
+class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.select_related("category")
+    serializer_class = ProductSerializer
+    http_method_names = ["get", "put", "delete", "head", "options"]
+
+
+class CategoryListAPIView(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    http_method_names = ["get", "head", "options"]
+
+    def get_queryset(self):
+        return (
+            Category.objects.annotate(products_total=Count("products"))
+            .prefetch_related("products__category")
+            .order_by("id")
+        )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["include_products"] = True
+        return context

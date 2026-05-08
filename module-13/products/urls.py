@@ -5,6 +5,11 @@ app_name = "shop"
 
 urlpatterns = [
     path("", views.home, name="home"),
+
+    # API URLs
+    path("api/products/", views.ProductListCreateAPIView.as_view(), name="api_product_list"),
+    path("api/products/<int:pk>/", views.ProductDetailAPIView.as_view(), name="api_product_detail"),
+    path("api/categories/", views.CategoryListAPIView.as_view(), name="api_category_list"),
     
     # Product URLs
     path("products/", views.product_list, name="product_list"),
