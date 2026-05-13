@@ -1,0 +1,38 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Home - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <h1 class="display-4">Welcome to ToriloShop 🛍️</h1>
+        <p class="lead">Your one-stop online store for quality products at great prices.</p>
+        <div class="mt-4">
+            <a href="{% url 'shop:product_list' %}" class="btn btn-dark btn-lg">Browse Products</a>
+            <a href="{% url 'shop:about' %}" class="btn btn-outline-dark btn-lg ms-2">About Us</a>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <div style="font-size: 80px; margin-bottom: 20px;">📦</div>
+        <p class="text-muted">Discover Amazing Deals Today</p>
+    </div>
+</div>
+<hr class="my-5">
+<div class="row">
+    <div class="col-md-4 text-center mb-4">
+        <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
+        <h5>Quality Products</h5>
+        <p>Handpicked selection of premium items</p>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
+        <h5>Fast Delivery</h5>
+        <p>Quick and reliable shipping</p>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div style="font-size: 40px; margin-bottom: 10px;">💰</div>
+        <h5>Great Prices</h5>
+        <p>Affordable rates with no hidden fees</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'products/base.html' %}
+
+{% block title %}About Us - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-8">
+        <h1 class="display-5 mb-4">About ToriloShop 🏪</h1>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Our Story</h5>
+                <p>Welcome to ToriloShop! We are a dedicated online retailer committed to providing quality products at affordable prices. Our mission is to make shopping convenient, reliable, and enjoyable for every customer.</p>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Our Values</h5>
+                <ul class="list-unstyled">
+                    <li><strong>✓ Quality</strong> - We carefully select every product</li>
+                    <li><strong>✓ Integrity</strong> - Honest pricing with no hidden fees</li>
+                    <li><strong>✓ Customer Service</strong> - Your satisfaction is our priority</li>
+                    <li><strong>✓ Innovation</strong> - Always improving our services</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Why Choose Us?</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h6>✨ Wide Selection</h6>
+                        <p>Browse through our extensive catalog of products</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h6>⚡ Fast Delivery</h6>
+                        <p>Quick and reliable shipping to your doorstep</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h6>💰 Competitive Prices</h6>
+                        <p>Get the best value for your money</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h6>🛡️ Secure Shopping</h6>
+                        <p>Your information is safe with us</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Contact Us</h5>
+                <p><strong>Email:</strong> support@toriloshop.com</p>
+                <p><strong>Phone:</strong> +234 XXX XXX XXXX</p>
+                <p><strong>Address:</strong> Lagos, Nigeria</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <a href="{% url 'shop:home' %}" class="btn btn-outline-dark">← Back to Home</a>
+</div>
+{% endblock %}
