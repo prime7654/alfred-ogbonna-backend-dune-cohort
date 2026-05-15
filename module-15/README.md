@@ -67,6 +67,15 @@ module-15/
 +-- README.md
 ```
 
+## SCREENSHOTS
+[Gunicorn running in production](Screenshots/01_gunicorn_running.png)
+
+[Collectstatic output](Screenshots/02_collectstatic_output.png)
+
+[requirements.txt content](Screenshots/03_requirements_txt.png)
+
+[gitignore content](Screenshots/04_gitignore_env_excluded.png)
+
 ## Local Setup Instructions
 
 
