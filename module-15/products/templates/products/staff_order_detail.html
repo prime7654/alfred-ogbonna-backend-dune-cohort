@@ -1,0 +1,53 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Manage Order #{{ order.id }} - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="product-list-header">
+    <p class="product-list-eyebrow">Staff workspace</p>
+    <h1>Manage Order #{{ order.id }}</h1>
+    <p class="mb-0">Placed by {{ order.full_name }} on {{ order.created_at|date:"F d, Y" }}.</p>
+</div>
+
+<div class="order-layout">
+    <div class="order-panel">
+        <h2>Items</h2>
+        {% for item in order.items.all %}
+            <div class="order-item-row">
+                <div>
+                    <strong>{{ item.product_name }}</strong>
+                    <p class="mb-0 text-muted">NGN {{ item.unit_price }} x {{ item.quantity }}</p>
+                </div>
+                <strong>NGN {{ item.line_total }}</strong>
+            </div>
+        {% endfor %}
+        <div class="summary-line summary-total">
+            <span>Total</span>
+            <strong>NGN {{ order.total_amount }}</strong>
+        </div>
+    </div>
+
+    <aside class="order-panel">
+        <h2>Fulfillment</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.status.id_for_label }}" class="form-label">Order Status</label>
+                {{ form.status }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Status</button>
+        </form>
+
+        <hr>
+        <h2>Customer</h2>
+        <p><strong>Name:</strong> {{ order.full_name }}</p>
+        <p><strong>Email:</strong> {{ order.email }}</p>
+        <p><strong>Phone:</strong> {{ order.phone }}</p>
+        <p class="mb-0"><strong>Address:</strong><br>{{ order.address|linebreaksbr }}</p>
+    </aside>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'shop:staff_order_list' %}" class="btn btn-outline-dark">Back to Orders</a>
+</div>
+{% endblock %}

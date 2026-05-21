@@ -1,0 +1,74 @@
+{% extends 'products/base.html' %}
+
+{% block title %}Shopping Cart - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="product-list-header">
+    <p class="product-list-eyebrow">Your cart</p>
+    <h1>Shopping Cart</h1>
+    <p class="mb-0">Review your items before checkout.</p>
+</div>
+
+{% if cart_items %}
+    <div class="cart-layout">
+        <div class="cart-items">
+            {% for item in cart_items %}
+                <div class="cart-row">
+                    <div class="cart-product">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        {% else %}
+                            <div class="cart-product-placeholder">No image</div>
+                        {% endif %}
+                        <div>
+                            <h2>{{ item.product.name }}</h2>
+                            <p>{{ item.product.category.name }}</p>
+                            <strong>NGN {{ item.product.price }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="cart-controls">
+                        <form method="post" action="{% url 'shop:update_cart_item' item.product.id %}" class="cart-quantity-form">
+                            {% csrf_token %}
+                            <label for="quantity-{{ item.product.id }}" class="form-label">Quantity</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" id="quantity-{{ item.product.id }}" name="quantity" class="form-control" value="{{ item.quantity }}" min="1" max="{{ item.max_quantity }}">
+                                <button type="submit" class="btn btn-outline-dark">Update</button>
+                            </div>
+                        </form>
+                        <form method="post" action="{% url 'shop:remove_cart_item' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Remove</button>
+                        </form>
+                    </div>
+
+                    <div class="cart-line-total">
+                        <span>Subtotal</span>
+                        <strong>NGN {{ item.line_total }}</strong>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <aside class="cart-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-line">
+                <span>Items</span>
+                <strong>{{ cart_item_count }}</strong>
+            </div>
+            <div class="summary-line">
+                <span>Total</span>
+                <strong>NGN {{ cart_total }}</strong>
+            </div>
+            <a href="{% url 'shop:checkout' %}" class="btn btn-primary btn-lg w-100">Checkout</a>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-outline-dark w-100 mt-2">Continue Shopping</a>
+        </aside>
+    </div>
+{% else %}
+    <div class="alert classic-empty-state empty-state" role="alert">
+        <h4 class="alert-heading">Your cart is empty</h4>
+        <p>Add products to your cart and they will appear here.</p>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-dark">Browse Products</a>
+    </div>
+{% endif %}
+{% endblock %}

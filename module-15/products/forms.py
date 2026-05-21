@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Category
+from .models import Order, Product, Category
 
 
 class CategoryForm(forms.ModelForm):
@@ -89,10 +89,35 @@ class ProductForm(forms.ModelForm):
             'required': 'Please select a category.'
         }
     )
+
+    description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Describe the product, materials, size, or key details',
+            'rows': 4
+        })
+    )
+
+    is_available = forms.BooleanField(
+        required=False,
+        initial=True,
+        label='Product is available',
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        })
+    )
+
+    image = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'form-control'
+        })
+    )
     
     class Meta:
         model = Product
-        fields = ['name', 'price', 'stock', 'category']
+        fields = ['name', 'description', 'price', 'stock', 'category', 'is_available', 'image']
     
     def clean_price(self):
         """Validate that price is not negative"""
@@ -107,3 +132,52 @@ class ProductForm(forms.ModelForm):
         if stock is not None and stock < 0:
             raise forms.ValidationError('Stock quantity cannot be negative.')
         return stock
+
+
+class CheckoutForm(forms.ModelForm):
+    """Collect delivery details for a customer order."""
+
+    full_name = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your full name'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email address'
+        })
+    )
+    phone = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your phone number'
+        })
+    )
+    address = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your delivery address',
+            'rows': 4
+        })
+    )
+
+    class Meta:
+        model = Order
+        fields = ['full_name', 'email', 'phone', 'address']
+
+
+class OrderStatusForm(forms.ModelForm):
+    """Allow staff users to update fulfillment state."""
+
+    status = forms.ChoiceField(
+        choices=Order.STATUS_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+    class Meta:
+        model = Order
+        fields = ['status']

@@ -9,6 +9,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
+    path("my-account/", views.my_account, name="my_account"),
     path(
         "login/",
         LoginView.as_view(

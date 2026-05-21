@@ -3,36 +3,104 @@
 {% block title %}Home - ToriloShop{% endblock %}
 
 {% block content %}
-<div class="row align-items-center">
-    <div class="col-md-6">
-        <h1 class="display-4">Welcome to ToriloShop 🛍️</h1>
-        <p class="lead">Your one-stop online store for quality products at great prices.</p>
-        <div class="mt-4">
-            <a href="{% url 'shop:product_list' %}" class="btn btn-dark btn-lg">Browse Products</a>
-            <a href="{% url 'shop:about' %}" class="btn btn-outline-dark btn-lg ms-2">About Us</a>
+<section class="home-hero">
+    <div class="home-hero-content">
+        <p class="product-list-eyebrow">ToriloShop marketplace</p>
+        <h1>Quality Finds For Everyday Shopping</h1>
+        <p class="home-hero-copy">Browse available products across trusted categories, compare prices quickly, and add the right item to your cart.</p>
+        <div class="home-hero-actions">
+            <a href="{% url 'shop:product_list' %}" class="btn classic-add-button btn-lg">Browse Products</a>
+            <a href="{% url 'shop:category_list' %}" class="btn btn-outline-light btn-lg">Shop Categories</a>
         </div>
     </div>
-    <div class="col-md-6 text-center">
-        <div style="font-size: 80px; margin-bottom: 20px;">📦</div>
-        <p class="text-muted">Discover Amazing Deals Today</p>
+
+    <div class="home-hero-product">
+        {% if hero_product %}
+            {% if hero_product.image %}
+                <img src="{{ hero_product.image.url }}" alt="{{ hero_product.name }}">
+            {% else %}
+                <div class="home-hero-placeholder">Featured product</div>
+            {% endif %}
+            <div class="home-hero-product-info">
+                <span>{{ hero_product.category.name }}</span>
+                <h2>{{ hero_product.name }}</h2>
+                <p>NGN {{ hero_product.price }}</p>
+                <a href="{% url 'shop:product_detail' hero_product.id %}">View item</a>
+            </div>
+        {% else %}
+            <div class="home-hero-placeholder">Products coming soon</div>
+        {% endif %}
     </div>
-</div>
-<hr class="my-5">
-<div class="row">
-    <div class="col-md-4 text-center mb-4">
-        <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
-        <h5>Quality Products</h5>
-        <p>Handpicked selection of premium items</p>
+</section>
+
+<section class="home-stats" aria-label="Catalog summary">
+    <div>
+        <span>{{ total_products }}</span>
+        <p>Total products</p>
     </div>
-    <div class="col-md-4 text-center mb-4">
-        <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
-        <h5>Fast Delivery</h5>
-        <p>Quick and reliable shipping</p>
+    <div>
+        <span>{{ available_products }}</span>
+        <p>Available now</p>
     </div>
-    <div class="col-md-4 text-center mb-4">
-        <div style="font-size: 40px; margin-bottom: 10px;">💰</div>
-        <h5>Great Prices</h5>
-        <p>Affordable rates with no hidden fees</p>
+    <div>
+        <span>{{ total_categories }}</span>
+        <p>Categories</p>
     </div>
-</div>
+</section>
+
+{% if category_preview %}
+<section class="home-section">
+    <div class="home-section-header">
+        <div>
+            <p class="product-list-eyebrow">Quick browse</p>
+            <h2>Shop By Category</h2>
+        </div>
+        <a href="{% url 'shop:category_list' %}" class="btn btn-outline-dark">View All</a>
+    </div>
+
+    <div class="home-category-grid">
+        {% for category in category_preview %}
+            <a href="{% url 'shop:product_list' %}?category={{ category.id }}" class="home-category-link">
+                <span>{{ category.name }}</span>
+                <small>{{ category.product_count }} product{{ category.product_count|pluralize }}</small>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if featured_products %}
+<section class="home-section">
+    <div class="home-section-header">
+        <div>
+            <p class="product-list-eyebrow">Available now</p>
+            <h2>Featured Products</h2>
+        </div>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-outline-dark">See Catalog</a>
+    </div>
+
+    <div class="row">
+        {% for product in featured_products %}
+            <div class="col-md-4 mb-4">
+                <div class="card product-card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card-image">
+                    {% else %}
+                        <div class="product-card-image product-card-placeholder">No image</div>
+                    {% endif %}
+                    <div class="product-card-body">
+                        <h5 class="product-card-title">{{ product.name }}</h5>
+                        <p class="product-card-category">{{ product.category.name }}</p>
+                        <div class="product-card-meta">
+                            <h6 class="product-price">NGN {{ product.price }}</h6>
+                            <small class="product-stock">Stock: {{ product.stock }} units</small>
+                        </div>
+                        <a href="{% url 'shop:product_detail' product.id %}" class="btn btn-dark btn-sm">View Product</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
 {% endblock %}

@@ -4,23 +4,42 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import RegistrationForm
+from products.models import Order
 
 
 @login_required
 def dashboard(request):
     user = request.user
+    if not (user.is_staff or user.is_superuser):
+        messages.error(request, "Only staff users can view the dashboard.")
+        return redirect("shop:home")
+
     if user.is_superuser:
         account_type = "Superuser account"
-    elif user.is_staff:
-        account_type = "Staff account"
     else:
-        account_type = "Regular customer account"
+        account_type = "Staff account"
 
     return render(
         request,
         "accounts/dashboard.html",
         {
             "account_type": account_type,
+        },
+    )
+
+
+@login_required
+def my_account(request):
+    orders = (
+        Order.objects.filter(user=request.user)
+        .prefetch_related("items")
+        .order_by("-created_at")
+    )
+    return render(
+        request,
+        "accounts/my_account.html",
+        {
+            "orders": orders,
         },
     )
 

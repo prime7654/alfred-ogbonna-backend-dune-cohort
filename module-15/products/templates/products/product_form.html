@@ -8,7 +8,7 @@
                 <h4 class="mb-0">{{ action }} Product</h4>
             </div>
             <div class="card-body">
-                <form method="post" novalidate>
+                <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
                     {% if form.non_field_errors %}
@@ -28,6 +28,19 @@
                         {% if form.name.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.name.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Product Description -->
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.description.errors %}
                                     <div>{{ error }}</div>
                                 {% endfor %}
                             </div>
@@ -67,6 +80,32 @@
                         {% if form.category.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in form.category.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Availability -->
+                    <div class="form-check form-switch mb-3">
+                        {{ form.is_available }}
+                        <label for="{{ form.is_available.id_for_label }}" class="form-check-label">{{ form.is_available.label }}</label>
+                        {% if form.is_available.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.is_available.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Product Image -->
+                    <div class="mb-3">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">Product Image</label>
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.image.errors %}
                                     <div>{{ error }}</div>
                                 {% endfor %}
                             </div>

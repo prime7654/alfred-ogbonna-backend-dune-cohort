@@ -1,0 +1,40 @@
+{% extends 'products/base.html' %}
+
+{% block title %}My Account - ToriloShop{% endblock %}
+
+{% block content %}
+<div class="product-list-header">
+    <p class="product-list-eyebrow">Customer dashboard</p>
+    <h1>My Account</h1>
+    <p class="mb-0">Review your profile and order history.</p>
+</div>
+
+<div class="account-layout">
+    <aside class="order-panel">
+        <h2>Profile</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+        <a href="{% url 'shop:cart_detail' %}" class="btn btn-dark w-100">View Cart</a>
+    </aside>
+
+    <div class="order-panel">
+        <h2>Order History</h2>
+        {% if orders %}
+            {% for order in orders %}
+                <div class="order-history-row">
+                    <div>
+                        <strong>Order #{{ order.id }}</strong>
+                        <p class="mb-0 text-muted">{{ order.created_at|date:"M d, Y" }} | {{ order.get_status_display }}</p>
+                    </div>
+                    <div class="text-end">
+                        <strong>NGN {{ order.total_amount }}</strong>
+                        <div><a href="{% url 'shop:order_detail' order.id %}">View details</a></div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted mb-0">You have not placed any orders yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category
+from .models import Category, Order, OrderItem, Product
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'category', 'stock', 'is_available', 'created_by']
@@ -23,3 +23,21 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ["product", "product_name", "unit_price", "quantity", "line_total"]
+    can_delete = False
+
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "full_name", "status", "total_amount", "created_at"]
+    list_filter = ["status", "created_at"]
+    search_fields = ["id", "full_name", "email", "user__username"]
+    inlines = [OrderItemInline]
+    readonly_fields = ["user", "full_name", "email", "phone", "address", "total_amount", "created_at", "updated_at"]
+
+
+admin.site.register(Order, OrderAdmin)

@@ -120,6 +120,11 @@
                 <div class="info-label">Superuser access</div>
                 <div class="info-value">{% if user.is_superuser %}Yes{% else %}No{% endif %}</div>
             </div>
+            <div class="mt-4 d-flex flex-wrap gap-2">
+                <a href="{% url 'shop:staff_order_list' %}" class="btn btn-dark">Manage Orders</a>
+                <a href="{% url 'shop:add_product' %}" class="btn btn-outline-dark">Add Product</a>
+                <a href="{% url 'shop:add_category' %}" class="btn btn-outline-dark">Add Category</a>
+            </div>
         </div>
     </div>
 </div>

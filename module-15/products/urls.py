@@ -17,6 +17,16 @@ urlpatterns = [
     path("products/<int:pk>/", views.product_detail, name="product_detail"),
     path("products/<int:pk>/edit/", views.edit_product, name="edit_product"),
     path("products/<int:pk>/delete/", views.delete_product, name="delete_product"),
+
+    # Cart, checkout, and order URLs
+    path("cart/", views.cart_detail, name="cart_detail"),
+    path("cart/add/<int:pk>/", views.add_to_cart, name="add_to_cart"),
+    path("cart/update/<int:pk>/", views.update_cart_item, name="update_cart_item"),
+    path("cart/remove/<int:pk>/", views.remove_cart_item, name="remove_cart_item"),
+    path("checkout/", views.checkout, name="checkout"),
+    path("orders/<int:pk>/", views.order_detail, name="order_detail"),
+    path("staff/orders/", views.staff_order_list, name="staff_order_list"),
+    path("staff/orders/<int:pk>/", views.staff_order_detail, name="staff_order_detail"),
     
     # Category URLs
     path("categories/", views.category_list, name="category_list"),

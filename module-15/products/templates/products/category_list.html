@@ -3,14 +3,15 @@
 {% block title %}Categories - ToriloShop{% endblock %}
 
 {% block content %}
-<div class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="product-list-header classic-product-header">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
         <div>
+            <p class="product-list-eyebrow">Shop by department</p>
             <h1 class="display-5 mb-2">Product Categories</h1>
-            <p class="text-muted">Browse our product categories and discover what we have to offer</p>
+            <p class="mb-0">Browse each department and jump straight into a filtered catalog.</p>
         </div>
         {% if user.is_staff %}
-            <a href="{% url 'shop:add_category' %}" class="btn btn-success btn-lg">
+            <a href="{% url 'shop:add_category' %}" class="btn classic-add-button">
                 Add Category
             </a>
         {% endif %}
@@ -21,18 +22,18 @@
     <div class="row">
         {% for category in categories %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 category-card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ category.name }}</h5>
-                    <p class="card-text text-muted">{{ category.description|default:"No description" }}</p>
+                    <h5 class="card-title category-card-title">{{ category.name }}</h5>
+                    <p class="card-text category-card-description">{{ category.description|default:"No description" }}</p>
                     <div class="mb-3">
-                        <span class="badge bg-info" style="font-size: 0.9rem;">
+                        <span class="badge bg-info text-dark category-count-badge">
                             {{ category.product_count }} product{{ category.product_count|pluralize }}
                         </span>
                     </div>
                     <div class="d-grid gap-2">
                         {% if category.product_count > 0 %}
-                            <a href="{% url 'shop:product_list' %}" class="btn btn-dark btn-sm">View Products</a>
+                            <a href="{% url 'shop:product_list' %}?category={{ category.id }}" class="btn btn-dark btn-sm">View Products</a>
                         {% else %}
                             <button class="btn btn-secondary btn-sm" disabled>No Products Yet</button>
                         {% endif %}
@@ -47,7 +48,7 @@
         {% endfor %}
     </div>
 
-    <div class="mt-5 p-4 bg-light rounded">
+    <div class="summary-panel">
         <h5>Summary</h5>
         <p>Total Categories: <strong>{{ categories|length }}</strong> |
            Total Products: <strong>{{ total_products }}</strong></p>
